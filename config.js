@@ -18,9 +18,9 @@ module.exports = require('yargs')
     })
     .default({
         interval: 10,
-        mqttUrl: 'mqtt://127.0.0.1',
+        mqtt-url: 'mqtt://127.0.0.1',
         name: 'ups',
-        upsName: 'ups',
+        ups-name: 'ups',
         verbosity: 'info'
     })
     .version()
