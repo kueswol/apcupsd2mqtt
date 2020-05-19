@@ -8,11 +8,15 @@ const config = require('./config.js');
 
 log.setLevel(config.verbosity);
 log.info(pkg.name + ' version ' + pkg.version + ' starting');
+var mqtt_options = {
+    username: process.env.MQTT_USERNAME,
+    password: process.env.MQTT_PASSWORD,
+  };
 
-const mqtt = Mqtt.connect(config.url);
+const mqtt = Mqtt.connect(config.mqtturl, mqtt_options);
 
 mqtt.on('connect', () => {
-    log.info('mqtt connected to', config.url);
+    log.info('mqtt connected to', config.mqtturl);
 });
 
 mqtt.on('close', () => {
