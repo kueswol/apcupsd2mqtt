@@ -66,7 +66,11 @@ function poll() {
                     }
 
                     if (label === 'upsname') {
-                        devicename = value;
+                        if (config.ups == "ups") {
+                            devicename = value;
+                        } else {
+                            devicename = config.ups
+                        }
                     } else if (!config.publishChangesOnly || (curvalues[label] !== value)) {
                         curvalues[label] = value;
                         log.debug(value + ' changed!');
