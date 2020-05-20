@@ -22,7 +22,7 @@ if [ -z "$MQTT_URL" ]; then
     exit 1
 fi
 
-sed -e "s/##UPSNAME##/$UPSNAME/" -e "s/##USBDEVICE##/$USBDEVICE/" template/apcupsd.conf.template > /etc/apcupsd/apcupsd.conf
+sed -e "s#%%UPSNAME%%#$UPSNAME#" -e "s#%%USBDEVICE%%#$USBDEVICE#" template/apcupsd.conf.template > /etc/apcupsd/apcupsd.conf
 # Start the first process
 /sbin/apcupsd
 status=$?

@@ -12,7 +12,7 @@
 #   Use this to give your UPS a name in log files and such. This
 #   is particulary useful if you have multiple UPSes. This does not
 #   set the EEPROM. It should be 8 characters or less.
-UPSNAME ##UPSNAME##
+UPSNAME %%UPSNAME%%
 
 # UPSCABLE <cable>
 #   Defines the type of cable connecting the UPS to your computer.
@@ -81,7 +81,7 @@ UPSCABLE usb
 #
 #UPSTYPE apcsmart
 UPSTYPE usb
-DEVICE ##USBDEVICE##
+DEVICE %%USBDEVICE%%
 
 # POLLTIME <int>
 #   Interval (in seconds) at which apcupsd polls the UPS for status. This
