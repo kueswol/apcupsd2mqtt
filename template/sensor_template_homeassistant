@@ -1,0 +1,30 @@
+sensors:
+  - platform: mqtt
+    state_topic: "ups/status/MGMT/loadpct"
+    name: "MGMT UPS Load Percentage"
+    unit_of_measurement: '%'
+    value_template: "{{ value_json.val }}"
+  - platform: mqtt
+    state_topic: "ups/status/MGMT/bcharge"
+    name: "MGMT UPS Battery Charge"
+    unit_of_measurement: '%'
+    value_template: "{{ value_json.val }}"
+  - platform: mqtt
+    state_topic: "ups/status/MGMT/timeleft"
+    name: "MGMT UPS Time Left"
+    unit_of_measurement: 'mins'
+    value_template: "{{ value_json.val }}"
+  - platform: mqtt
+    state_topic: "ups/status/MGMT/status"
+    name: "MGMT UPS Status"
+    value_template: "{{ value_json.val }}"
+  - platform: mqtt
+    state_topic: "ups/status/MGMT/linev"
+    name: "MGMT UPS Line Voltage"
+    unit_of_measurement: 'Volts'
+    value_template: "{{ value_json.val }}"
+  - platform: mqtt
+    state_topic: "ups/status/MGMT/battv"
+    name: "MGMT UPS Battery Voltage"
+    unit_of_measurement: 'Volts'
+    value_template: "{{ value_json.val }}"
