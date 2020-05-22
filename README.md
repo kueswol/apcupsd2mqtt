@@ -33,7 +33,7 @@ The following environment variables are available to run your container:
 | Parameter | Mandatory | Default Value | Description | Example |
 | --- | --- | --- | --- | --- |
 | MQTT_URL | yes | - | mqtt URL, as the parameter name suggests | "mqtt://mqtt:1883" |
-| MQTT_TOPIC | no | "ups" | mqtt topic to write values to - "/status/<devicename>/" will be added currently | "infrastructure/ups" |
+| MQTT_TOPIC | no | "ups" | mqtt topic to write values to - "/status/*devicename*/" will be added currently | "infrastructure/ups" |
 | UPSNAME | no | "ups" | used in apcupsd as devicename | "myFancyUPS" |
 | USBDEVICE | no | "auto" | the USB device name - if set to auto apcupsd will try to find it on its own | "/dev/usb/hiddev0" |
 | A2M_INTERVAL | no | "10" | the interval values should be written to mqtt | "11" |
