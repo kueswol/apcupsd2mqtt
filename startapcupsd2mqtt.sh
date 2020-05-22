@@ -1,18 +1,18 @@
 #!/bin/bash
 if [ "$DEBUG" == "true" ]; then
-   MQTT_DEBUG="-v debug"
+   MQTT_DEBUG=""
 else
    MQTT_DEBUG=""
 fi
-if [ -z "$UPSNAME" ]; then
-    echo "UPSNAME env variable not set"
-    exit 1
-fi
-if [ -z "$USBDEVICE" ]; then
-    echo "USBDEVICE env variable not set"
-    exit 1
-fi
-if [ ! -e "$USBDEVICE" ]; then
+
+# set a default value for UPSNAME so one can ommit this variable
+UPSNAME="${UPSNAME:-ups}"
+
+# set a default value for USBDEVICE, if not already provided
+#   setting it to "auto" will trigger auto detection by apcupsd
+USBDEVICE="${USBDEVICE:-auto}"
+
+if [ "$USBDEVICE" != "auto" ] && [ ! -e "$USBDEVICE" ]; then
     echo "Device file does not exist: $USBDEVICE"
     exit 1
 fi
@@ -22,7 +22,14 @@ if [ -z "$MQTT_URL" ]; then
     exit 1
 fi
 
-sed -e "s#%%UPSNAME%%#$UPSNAME#" -e "s#%%USBDEVICE%%#$USBDEVICE#" template/apcupsd.conf.template > /etc/apcupsd/apcupsd.conf
+# replace parameters in template
+#   we'll delete the device, if it is set to "auto"
+if [ "$USBDEVICE" == "auto" ]; then
+    sed -e "s#%%UPSNAME%%#$UPSNAME#" -e "#%%USBDEVICE%%#d" template/apcupsd.conf.template > /etc/apcupsd/apcupsd.conf
+else
+    sed -e "s#%%UPSNAME%%#$UPSNAME#" -e "s#%%USBDEVICE%%#$USBDEVICE#" template/apcupsd.conf.template > /etc/apcupsd/apcupsd.conf
+fi
+
 # Start the first process
 /sbin/apcupsd
 status=$?
@@ -32,8 +39,22 @@ if [ $status -ne 0 ]; then
 fi
 echo "Waiting... for apcupsd to get ready"
 sleep 2
+
+# build apcupsd2mqtt parameters
+A2M_PARAMS="-m ${MQTT_URL} -u ${UPSNAME}"
+
+if [ "$DEBUG" == "true" ]; then
+    A2M_PARAMS="${A2M_PARAMS} -v debug"
+fi
+if [ ! -z "${MQTT_TOPIC}" ]; then
+    A2M_PARAMS="${A2M_PARAMS} -n ${MQTT_TOPIC}"
+fi
+if [ ! -z "${A2M_INTERVAL}" ]; then
+    A2M_PARAMS="${A2M_PARAMS} -i ${A2M_INTERVAL}"
+fi
+
 # Start the second process
-/usr/local/bin/apcupsd2mqtt $MQTT_DEBUG  -m $MQTT_URL -u $UPSNAME &
+/usr/local/bin/apcupsd2mqtt ${A2M_PARAMS} &
 status=$?
 if [ $status -ne 0 ]; then
   echo "Failed to start apcupsd2mqtt: $status"
