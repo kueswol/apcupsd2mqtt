@@ -31,7 +31,7 @@ https://github.com/cyberjunky/node-apcupsd - Original
 The following environment variables are available to run your container:
 
 | Parameter | Mandatory | Default Value | Description | Example |
-| --- | --- | --- | --- | --- | --- |
+| --- | --- | --- | --- | --- |
 | MQTT_URL | yes | - | mqtt URL, as the parameter name suggests | "mqtt://mqtt:1883" |
 | MQTT_TOPIC | no | "ups" | mqtt topic to write values to - "/status/<devicename>/" will be added currently | "infrastructure/ups" |
 | UPSNAME | no | "ups" | used in apcupsd as devicename | "myFancyUPS" |
