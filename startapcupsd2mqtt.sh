@@ -1,9 +1,4 @@
 #!/bin/bash
-if [ "$DEBUG" == "true" ]; then
-   MQTT_DEBUG=""
-else
-   MQTT_DEBUG=""
-fi
 
 # set a default value for UPSNAME so one can ommit this variable
 UPSNAME="${UPSNAME:-ups}"
