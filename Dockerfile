@@ -6,7 +6,8 @@ RUN apt-get update -y && \
 RUN mkdir /apcupsd2mqtt
 COPY ./ /apcupsd2mqtt
 WORKDIR /apcupsd2mqtt
-RUN npm install -g && \
+RUN npm config set registry http://registry.npmjs.org/ && \
+    npm install -g && \
     npm prune --production
 RUN chmod +x ./startapcupsd2mqtt.sh
 CMD ./startapcupsd2mqtt.sh
