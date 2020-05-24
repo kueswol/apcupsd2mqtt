@@ -20,9 +20,9 @@ fi
 # replace parameters in template
 #   we'll delete the device, if it is set to "auto"
 if [ "$USBDEVICE" == "auto" ]; then
-    sed -e "s#%%UPSNAME%%#$UPSNAME#" -e "#%%USBDEVICE%%#d" template/apcupsd.conf.template > /etc/apcupsd/apcupsd.conf
+    sed -e "s/%%UPSNAME%%/$UPSNAME/" -e "/%%USBDEVICE%%/d" template/apcupsd.conf.template > /etc/apcupsd/apcupsd.conf
 else
-    sed -e "s#%%UPSNAME%%#$UPSNAME#" -e "s#%%USBDEVICE%%#$USBDEVICE#" template/apcupsd.conf.template > /etc/apcupsd/apcupsd.conf
+    sed -e "s/%%UPSNAME%%/$UPSNAME/" -e "s/%%USBDEVICE%%/$USBDEVICE/" template/apcupsd.conf.template > /etc/apcupsd/apcupsd.conf
 fi
 
 # Start the first process
