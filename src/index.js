@@ -49,7 +49,11 @@ function poll() {
         } else {
             log.debug(response);
             const lines = response.trim().split('\n');
-
+			
+			//the trailing space is needed!
+			var influx = "ups ";
+			var timestamp = Date.now();
+			
             // Loop over every line
             lines.forEach(line => {
                 // Assign values
@@ -63,7 +67,11 @@ function poll() {
                     value = value.replace(/(^\s+|\s+$)/g, '');
                     if (numeric.indexOf(label) !== -1) {
                         value = parseFloat(value.split(' ')[0]);
+						influx = influx + label + "=" + value.toString() + ","
                     }
+					else {
+						influx = influx + label + '="' + value + '",'
+					}
 
                     if (label === 'upsname') {
                         if (config.ups == "ups") {
@@ -75,13 +83,16 @@ function poll() {
                         curvalues[label] = value;
                         log.debug(value + ' changed!');
                         // Publish value
-                        const topic = config.name + '/status/' + devicename + '/' + label;
+                        const topic = config.name + '/' + label;
                         const payload = JSON.stringify({val: value});
                         log.debug('mqtt >', topic, payload);
                         mqtt.publish(topic, payload, {retain: true});
                     }
                 }
             });
+			influx = influx.substring(0, influx.length - 1);
+			influx = influx + " " + timestamp.toString();
+			mqtt.publish(config.name + '/influx', influx, {retain: true});
         }
         log.debug(curvalues);
         setTimeout(poll, config.interval * 1000);
