@@ -52,7 +52,7 @@ function poll() {
 			
 			//the trailing space is needed!
 			var influx = "ups ";
-			var timestamp = Date.now();
+			var timestamp = Math.round(Date.now() / 1000);
 			
             // Loop over every line
             lines.forEach(line => {
